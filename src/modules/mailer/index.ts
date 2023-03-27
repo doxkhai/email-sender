@@ -5,7 +5,7 @@ import mailer from "./mailer";
 
 const router = Router();
 
-router.post("/", async (req, res) => {
+router.post("/", async (req, res, next) => {
   try {
     const result = await mailer(new EmailDTO(req.body));
     return res
@@ -13,7 +13,7 @@ router.post("/", async (req, res) => {
       .json(responseToClient({ status: 201, data: result }));
   } catch (e) {
     console.log(e);
-    throw e;
+    next(e)
   }
 });
 

@@ -1,11 +1,11 @@
 {
   "name": "email-sender",
   "version": "1.0.0",
-  "main": "index.ts",
+  "main": "src/index.ts",
   "license": "MIT",
   "scripts": {
     "build": "npx tsc",
-    "start": "node index.js",
+    "start": "nodemon dist/index.js",
     "watch": "concurrently \"yarn build --watch\" \"nodemon -q dist/index.js\""
   },
   "dependencies": {

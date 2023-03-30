@@ -7,10 +7,17 @@ import { registerEmail, subscribeEmail, unSubscribeEmail } from "./service";
 
 const router = Router();
 
+// TODO:
+/*
+ *  - fix host when send verify email
+ *  - validate config when start app
+ *  - (optional) refactor
+ */
+
 router.post(
   "/subscribe",
   receiverExist("body"),
-  async ({ body: { email }, hostname }, res, next) => {
+  async ({ body: { receiver }, hostname }, res, next) => {
     try {
       const exist = res.locals.receiverExist;
       if (exist)
@@ -18,7 +25,7 @@ router.post(
           .status(200)
           .json(responseToClient({ message: "Email already subscribed" }));
 
-      await registerEmail(isEmail(email), hostname);
+      await registerEmail(isEmail(receiver), hostname);
       return res.status(201).json(
         responseToClient({
           status: 201,

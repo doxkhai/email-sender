@@ -6,7 +6,6 @@ const receiverExist = (where: "params" | "body" = "params"): RequestHandler => {
   return async (req, res, next) => {
     try {
       const receiverEmail: string = req[where].receiver;
-      console.log(req.body.receiver)
       if (!receiverEmail) throw new Error();
 
       const exist = await client.get(receiverEmail);

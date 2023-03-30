@@ -1,9 +1,10 @@
-import { EmailDTO } from "../../types/email.dto";
+import { EmailDTO } from "../../common/types/email.dto";
 import transporter from "./transporter";
+import config from "@config";
 
-export default function mailer(email: EmailDTO) {
+function mailer(email: EmailDTO) {
   const mailOptions = {
-    from: process.env.EMAIL,
+    from: config.email.address,
     to: email.receiver,
     subject: email.subject,
     text: email.text,
@@ -11,3 +12,5 @@ export default function mailer(email: EmailDTO) {
 
   return transporter.sendMail(mailOptions);
 }
+
+export { mailer };

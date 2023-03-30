@@ -1,8 +1,8 @@
-import { Response } from "../types/response";
+import { Response } from "../common/types/response";
 
 const responseToClient = (res: Response) => {
   return {
-    status: res.status,
+    status: res.status ?? 200,
     ...(res.message ? { message: res.message } : {}),
     ...(res.data ? { data: res.data } : {}),
   };

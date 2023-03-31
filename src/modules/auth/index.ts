@@ -10,6 +10,7 @@ const router = Router();
 // TODO:
 /*
  *  - fix host when send verify email
+ *  - create a html mail form with jwt to unsubscribe
  *  - validate config when start app
  *  - (optional) refactor
  */
@@ -17,7 +18,7 @@ const router = Router();
 router.post(
   "/subscribe",
   receiverExist("body"),
-  async ({ body: { receiver }, hostname }, res, next) => {
+  async ({ body: { receiver }, headers: {host} }, res, next) => {
     try {
       const exist = res.locals.receiverExist;
       if (exist)
@@ -25,7 +26,7 @@ router.post(
           .status(200)
           .json(responseToClient({ message: "Email already subscribed" }));
 
-      await registerEmail(isEmail(receiver), hostname);
+      await registerEmail(isEmail(receiver), host ?? '');
       return res.status(201).json(
         responseToClient({
           status: 201,

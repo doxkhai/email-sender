@@ -2,14 +2,18 @@ import { Router } from "express";
 import { receiverExist } from "../../common/middleware/checkExist";
 import { EmailDTO } from "../../common/types/email.dto";
 import responseToClient from "../../utils/response";
-import { mailer } from "./service";
+import { sendMail } from "./service";
 
 const router = Router();
 
 router.post(
   "/:receiver",
   receiverExist(),
-  async ({ params: { receiver }, body: { subject, text } }, res, next) => {
+  async (
+    { params: { receiver }, body: { subject, text }, headers: { host } },
+    res,
+    next
+  ) => {
     try {
       const exist = res.locals.receiverExist;
       if (!exist)
@@ -20,12 +24,13 @@ router.post(
           })
         );
 
-      await mailer(
+      await sendMail(
         new EmailDTO({
           receiver,
           subject,
           text,
-        })
+        }),
+        host ?? ''
       );
       return res
         .status(201)

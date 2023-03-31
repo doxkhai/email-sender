@@ -3,12 +3,12 @@ import { mailer } from "../mailer/service";
 import * as constants from "../../common/constants";
 import { signJwt } from "../../utils/jwt";
 
-async function sendVerification(email: string, hostname: string) {
+async function sendVerification(email: string, host: string) {
   const emailSlug = signJwt({email})
-  const verificationLink = `${hostname}/auth/verify/${emailSlug}`;
+  const verificationLink = `${host}/auth/verify/${emailSlug}`;
 
   const mailOption = {
-    receiver: email,
+    to: email,
     subject: constants.EMAIL_VERIFY_SUBJECT,
     text: constants.EMAIL_VERIFY_TEXT + "\n" + verificationLink,
   };
@@ -16,11 +16,11 @@ async function sendVerification(email: string, hostname: string) {
   return mailer(mailOption);
 }
 
-async function registerEmail(email: string, hostname: string) {
+async function registerEmail(email: string, host: string) {
   const exist = await client.get(email);
   if (exist === "true") return false;
 
-  return sendVerification(email, hostname);
+  return sendVerification(email, host);
 }
 
 async function subscribeEmail(email: string) {

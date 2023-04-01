@@ -11,6 +11,8 @@ connect()
 const app = express();
 const PORT = env.port;
 
+console.log({host: env.host})
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

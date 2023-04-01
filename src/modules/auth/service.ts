@@ -2,25 +2,25 @@ import client from "../../config/db";
 import { mailer } from "../mailer/service";
 import * as constants from "../../common/constants";
 import { signJwt } from "../../utils/jwt";
+import { verifyForm } from "../../utils/verifyForm";
 
-async function sendVerification(email: string, host: string) {
-  const emailSlug = signJwt({email})
-  const verificationLink = `${host}/auth/verify/${emailSlug}`;
+async function sendVerification(email: string) {
+  const emailSlug = signJwt({email}, {})
 
   const mailOption = {
     to: email,
     subject: constants.EMAIL_VERIFY_SUBJECT,
-    text: constants.EMAIL_VERIFY_TEXT + "\n" + verificationLink,
+    html: verifyForm(constants.EMAIL_VERIFY_TEXT, emailSlug),
   };
 
   return mailer(mailOption);
 }
 
-async function registerEmail(email: string, host: string) {
+async function registerEmail(email: string) {
   const exist = await client.get(email);
   if (exist === "true") return false;
 
-  return sendVerification(email, host);
+  return sendVerification(email);
 }
 
 async function subscribeEmail(email: string) {

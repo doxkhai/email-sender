@@ -4,6 +4,7 @@ const config = {
     password: process.env.PASSWORD!,
   },
   port: process.env.PORT ?? 3000,
+  host: process.env.HOST,
   redis: {
     host: process.env.REDIS_HOST!,
     password: process.env.REDIS_PASSWORD!,
@@ -11,7 +12,8 @@ const config = {
   },
   jwt: {
     secret: process.env.JWT_SECRET!,
-    expires: process.env.JWT_EXPIRES_IN ?? '5m',
+    expires: process.env.JWT_EXPIRES ?? '5m',
+    expiresUnsubscribe: process.env.JWT_EXPIRES_UNSUBSCRIBE ?? '30d'
   },
 };
 

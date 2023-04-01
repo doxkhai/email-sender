@@ -6,7 +6,7 @@ const verifyJWT = (name: string, where: "params" | "body" = "params"): RequestHa
   return async (req, res, next) => {
     const jwt = req[where][name];
     try {
-      res.locals.payload = verifyJwt(jwt);
+      res.locals.payload = verifyJwt(jwt, {});
       next();
     } catch (e) {
       return res

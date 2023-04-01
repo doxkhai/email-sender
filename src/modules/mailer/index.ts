@@ -10,7 +10,7 @@ router.post(
   "/:receiver",
   receiverExist(),
   async (
-    { params: { receiver }, body: { subject, text }, headers: { host } },
+    { params: { receiver }, body: { subject, text }},
     res,
     next
   ) => {
@@ -30,7 +30,6 @@ router.post(
           subject,
           text,
         }),
-        host ?? ''
       );
       return res
         .status(201)

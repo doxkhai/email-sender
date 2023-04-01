@@ -8,20 +8,22 @@ import Mail from "nodemailer/lib/mailer";
 function mailer(option: Mail.Options) {
   const mailOptions = {
     ...option,
-    from: config.email.address
+    from: config.email.address,
   };
 
   return transporter.sendMail(mailOptions);
 }
 
-function sendMail(option: EmailDTO, host: string) {
-  const unsubscribeJwt = signJwt({email: option.to})
-  const html = mailerForm(option.text, unsubscribeJwt, host)
-  console.log({html})
+function sendMail(option: EmailDTO) {
+  const unsubscribeJwt = signJwt(
+    { email: option.to },
+    { expires: config.jwt.expiresUnsubscribe }
+  );
+  const html = mailerForm(option.text, unsubscribeJwt);
   return mailer({
     ...option,
     html,
-  })
+  });
 }
 
 export { mailer, sendMail };

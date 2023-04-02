@@ -1,17 +1,19 @@
 import { config } from "dotenv";
 config();
+
+import env from "@config";
+import { configValidator } from "./common/validator/config.validator";
+if(!configValidator(env)) throw new Error('Config validation failed')
+
 import express from "express";
 import mailerRouter from "./modules/mailer";
 import authRouter from "./modules/auth"
-import env from "@config";
 
 import { connect } from "./config/db";
 connect()
 
 const app = express();
 const PORT = env.port;
-
-console.log({host: env.host})
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

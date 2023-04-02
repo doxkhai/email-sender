@@ -1,4 +1,4 @@
-import { Response } from "../common/types/response";
+import { Response } from "../common/types/response.type";
 
 const responseToClient = (res: Response) => {
   return {

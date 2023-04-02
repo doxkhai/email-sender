@@ -9,8 +9,8 @@ const router = Router();
 
 // TODO:
 /*
+ *  - deploy
  *  - use handlebars to handle html
- *  - validate config when start app
  *  - (optional) refactor
  */
 

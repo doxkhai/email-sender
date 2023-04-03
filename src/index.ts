@@ -3,15 +3,15 @@ config();
 
 import env from "@config";
 import { configValidator } from "./common/validator/config.validator";
-if(!configValidator(env)) throw new Error('Config validation failed')
+if (!configValidator(env)) throw new Error("Config validation failed");
 
 import express from "express";
 import mailerRouter from "./modules/mailer";
-import authRouter from "./modules/auth"
-import healthRouter from "./modules/health"
+import authRouter from "./modules/auth";
+import healthRouter from "./modules/health";
 
 import { connect } from "./config/db";
-connect()
+connect();
 
 const app = express();
 const PORT = env.port;
@@ -23,6 +23,7 @@ app.use("/auth", authRouter);
 app.use("/mailer", mailerRouter);
 app.use("/health", healthRouter);
 
+console.log({ env });
 app.listen(PORT, () => {
   console.log(`App is listening on port: ${PORT}`);
 });

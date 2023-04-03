@@ -4,7 +4,7 @@ const config = {
     password: process.env.PASSWORD!,
   },
   port: process.env.PORT ?? 3000,
-  host: process.env.HOST ? `${process.env.HOST}:${process.env.PORT}` : '',
+  host: process.env.HOST ?? '',
   redis: {
     host: process.env.REDIS_HOST!,
     password: process.env.REDIS_PASSWORD!,

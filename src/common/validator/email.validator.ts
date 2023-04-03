@@ -4,5 +4,7 @@ export default function isEmail(email: string | unknown) {
     const emailRegex = /^[\w\-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
     if (emailRegex.test(email)) return email;
   }
-  throw new Error("Wrong email format");
+  const err = new Error("Wrong email format");
+  err.name = "400";
+  throw err;
 }

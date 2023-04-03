@@ -1,6 +1,5 @@
 import { RequestHandler } from "express";
 import client from "../../config/db";
-import responseToClient from "../../utils/response";
 
 const receiverExist = (where: "params" | "body" = "params"): RequestHandler => {
   return async (req, res, next) => {
@@ -12,12 +11,9 @@ const receiverExist = (where: "params" | "body" = "params"): RequestHandler => {
       res.locals.receiverExist = exist === "true";
       return next();
     } catch (e) {
-      return res.status(400).json(
-        responseToClient({
-          status: 400,
-          message: "Specified receiver email",
-        })
-      );
+      const err = new Error('Specified receiver email')
+      err.name = '400';
+      return next(err)
     }
   };
 };

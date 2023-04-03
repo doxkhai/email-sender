@@ -9,27 +9,21 @@ const router = Router();
 router.post(
   "/:receiver",
   receiverExist(),
-  async (
-    { params: { receiver }, body: { subject, text }},
-    res,
-    next
-  ) => {
+  async ({ params: { receiver }, body: { subject, text } }, res, next) => {
     try {
       const exist = res.locals.receiverExist;
-      if (!exist)
-        return res.status(400).json(
-          responseToClient({
-            status: 400,
-            message: "Receiver not subscribed yet",
-          })
-        );
+      if (!exist) {
+        const err = new Error("Wrong email format");
+        err.name = "400";
+        throw err;
+      }
 
       await sendMail(
         new EmailDTO({
           receiver,
           subject,
           text,
-        }),
+        })
       );
       return res
         .status(201)

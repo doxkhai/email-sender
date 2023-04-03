@@ -5,6 +5,7 @@ const responseToClient = (res: Response) => {
     status: res.status ?? 200,
     ...(res.message ? { message: res.message } : {}),
     ...(res.data ? { data: res.data } : {}),
+    ...(res.path ? { path: res.path } : {}),
   };
 };
 

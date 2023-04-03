@@ -1,16 +1,13 @@
 import config from "@config";
 
-export const mailerForm = (
-  text: string,
-  unsubscribeJwt: string,
-) => {
+export const mailerForm = (text: string, unsubscribeJwt: string) => {
   const body = `
   <table class="main_div" style="min-height: 200px; text-align: center; width: 100%">
     <tr>
-        <td valign="top" align="left" style="font-size: 26px; color: #000"><p>${text}</p></td>
+        <td valign="top" align="left" style="font-size: 15px; color: #000"><div>${text}</div></td>
     </tr>
     <tr>
-        <td valign="bottom" style="font-size: 12px;">
+        <td valign="bottom" style="font-size: 9px;">
             <a
             rel="noreferrer"
             target="_blank"

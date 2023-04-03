@@ -1,4 +1,6 @@
 export default function isString(str: string | unknown) {
   if (typeof str === "string") return str;
-  throw new Error("Invalid string");
+  const err = new Error("Invalid string");
+  err.name = "400";
+  throw err;
 }

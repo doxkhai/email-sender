@@ -8,6 +8,7 @@ if(!configValidator(env)) throw new Error('Config validation failed')
 import express from "express";
 import mailerRouter from "./modules/mailer";
 import authRouter from "./modules/auth"
+import healthRouter from "./modules/health"
 
 import { connect } from "./config/db";
 connect()
@@ -20,6 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/auth", authRouter);
 app.use("/mailer", mailerRouter);
+app.use("/health", healthRouter);
 
 app.listen(PORT, () => {
   console.log(`App is listening on port: ${PORT}`);

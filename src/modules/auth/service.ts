@@ -1,8 +1,10 @@
 import client from "../../config/db";
 import { mailer } from "../mailer/service";
-import * as constants from "../../common/constants";
+import * as constants from "../../common/constants/mail.constants";
 import { signJwt } from "../../utils/jwt";
 import { verifyForm } from "../../utils/verifyForm";
+import AppError from "../../utils/appError";
+import { HttpCode } from "../../common/types/error.enum";
 
 async function sendVerification(email: string) {
   const emailSlug = signJwt({email}, {})
@@ -25,12 +27,12 @@ async function registerEmail(email: string) {
 
 async function subscribeEmail(email: string) {
   const res = await client.set(email, "true");
-  if (res !== "OK") throw new Error("Something wrong with DB");
+  if (res !== "OK") throw AppError("Something wrong with DB", HttpCode.INTERNAL);
 }
 
 async function unSubscribeEmail(email: string) {
   const res = await client.set(email, "false");
-  if (res !== "OK") throw new Error("Something wrong with DB");
+  if (res !== "OK") throw AppError("Something wrong with DB", HttpCode.INTERNAL);
 }
 
 export { subscribeEmail, registerEmail, unSubscribeEmail };

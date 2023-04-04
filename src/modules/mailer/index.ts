@@ -3,6 +3,7 @@ import { receiverExist } from "../../common/middleware/checkExist";
 import { EmailDTO } from "../../common/types/email.dto";
 import responseToClient from "../../utils/response";
 import { sendMail } from "./service";
+import { HttpCode } from "../../common/types/error.enum";
 
 const router = Router();
 
@@ -19,12 +20,11 @@ router.post(
         })
       );
       return res
-        .status(201)
+        .status(HttpCode.CREATED)
         .json(
-          responseToClient({ status: 201, message: "Mail sent successfully" })
+          responseToClient({ status: HttpCode.CREATED, message: "Mail sent successfully" })
         );
     } catch (e) {
-      console.log(e);
       next(e);
     }
   }

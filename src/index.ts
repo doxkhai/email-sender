@@ -1,9 +1,12 @@
+import AppError from "./utils/appError";
+import { HttpCode } from "./common/types/error.enum";
+
 import { config } from "dotenv";
 config();
 
 import env from "@config";
 import { configValidator } from "./common/validator/config.validator";
-if (!configValidator(env)) throw new Error("Config validation failed");
+if (!configValidator(env)) throw AppError("Config validation failed", HttpCode.INTERNAL);
 
 import express from "express";
 import cors from "cors";

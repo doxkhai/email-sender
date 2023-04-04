@@ -9,7 +9,7 @@ const logConfigError = ({
   failedConfig: ConfigType;
   failedProperty: string;
 }) => {
-  console.log(`Failed validation: ${i++}`, {
+  console.error(`Failed validation: ${i++}`, {
     failedConfig,
     failedProperty,
     failedValue: failedConfig[failedProperty],

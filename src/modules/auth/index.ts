@@ -4,12 +4,12 @@ import { verifyJWT } from "../../common/middleware/jwt";
 import isEmail from "../../common/validator/email.validator";
 import responseToClient from "../../utils/response";
 import { registerEmail, subscribeEmail, unSubscribeEmail } from "./service";
+import { HttpCode } from "../../common/types/error.enum";
 
 const router = Router();
 
 // TODO:
 /*
- *  - use constants for status codes
  *  - implement checking health on specific paths
  *  - use handlebars to handle html
  *  - (optional) refactor
@@ -21,15 +21,14 @@ router.post(
   async ({ params: { receiver } }, res, next) => {
     try {
       await registerEmail(isEmail(receiver));
-      return res.status(201).json(
+      return res.status(HttpCode.CREATED).json(
         responseToClient({
-          status: 201,
+          status: HttpCode.CREATED,
           message:
             "Verification is sent to your email, click the link to verify your subscription.",
         })
       );
     } catch (e) {
-      console.log(e);
       next(e);
     }
   }
@@ -40,14 +39,13 @@ router.get("/verify/:jwt", verifyJWT("jwt"), async (_req, res, next) => {
     const { email }: { email: string } = res.locals.payload;
     await subscribeEmail(email);
 
-    return res.status(202).json(
+    return res.status(HttpCode.ACCEPTED).json(
       responseToClient({
-        status: 202,
+        status: HttpCode.ACCEPTED,
         message: "Email subscribed successfully!",
       })
     );
   } catch (e) {
-    console.log(e);
     next(e);
   }
 });
@@ -57,14 +55,13 @@ router.get("/unsubscribe/:jwt", verifyJWT("jwt"), async (_req, res, next) => {
     const { email }: { email: string } = res.locals.payload;
     await unSubscribeEmail(email);
 
-    return res.status(202).json(
+    return res.status(HttpCode.ACCEPTED).json(
       responseToClient({
-        status: 202,
+        status: HttpCode.ACCEPTED,
         message: "Email unsubscribed successfully!",
       })
     );
   } catch (e) {
-    console.log(e);
     next(e);
   }
 });

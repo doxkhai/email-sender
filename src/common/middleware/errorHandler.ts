@@ -1,18 +1,19 @@
 import { ErrorRequestHandler, RequestHandler } from "express";
 import responseToClient from "../../utils/response";
+import AppError from "../../utils/appError";
+import { HttpCode } from "../types/error.enum";
 
 const notFoundHandler: RequestHandler = (_req, _res, next) => {
-    const err = new Error('Not found')
-    err.name = '404';
-    return next(err);
+    return next(AppError('Not found', HttpCode.NOT_FOUND));
 };
 
 const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
+  console.error(err)
   if (res.headersSent) {
     return next(err);
   }
 
-  let status = Number(isNaN(err.name) ? 500 : err.name);
+  let status = Number(isNaN(err.code) ? HttpCode.INTERNAL : err.code);
   let message = err.message ?? "Internal server error";
 
   return res.status(status).json(

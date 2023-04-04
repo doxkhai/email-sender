@@ -8,16 +8,9 @@ const router = Router();
 
 router.post(
   "/:receiver",
-  receiverExist(),
+  receiverExist(false),
   async ({ params: { receiver }, body: { subject, text } }, res, next) => {
     try {
-      const exist = res.locals.receiverExist;
-      if (!exist) {
-        const err = new Error("Wrong email format");
-        err.name = "400";
-        throw err;
-      }
-
       await sendMail(
         new EmailDTO({
           receiver,

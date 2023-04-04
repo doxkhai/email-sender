@@ -9,22 +9,17 @@ const router = Router();
 
 // TODO:
 /*
- *  - deploy
+ *  - use constants for status codes
+ *  - implement checking health on specific paths
  *  - use handlebars to handle html
  *  - (optional) refactor
  */
 
 router.post(
-  "/subscribe",
-  receiverExist("body"),
-  async ({ body: { receiver } }, res, next) => {
+  "/subscribe/:receiver",
+  receiverExist(true),
+  async ({ params: { receiver } }, res, next) => {
     try {
-      const exist = res.locals.receiverExist;
-      if (exist)
-        return res
-          .status(200)
-          .json(responseToClient({ message: "Email already subscribed" }));
-
       await registerEmail(isEmail(receiver));
       return res.status(201).json(
         responseToClient({

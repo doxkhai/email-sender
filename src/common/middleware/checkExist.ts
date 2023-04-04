@@ -1,19 +1,27 @@
 import { RequestHandler } from "express";
 import client from "../../config/db";
+import isEmail from "../validator/email.validator";
 
-const receiverExist = (where: "params" | "body" = "params"): RequestHandler => {
-  return async (req, res, next) => {
+const receiverExist = (errorIfExist = true): RequestHandler => {
+  return async (req, _res, next) => {
     try {
-      const receiverEmail: string = req[where].receiver;
-      if (!receiverEmail) throw new Error();
+      const receiverEmail: string = isEmail(req.params.receiver);
+      if (!receiverEmail) {
+        const err = new Error("Specified receiver email");
+        err.name = "400";
+        throw err;
+      }
 
-      const exist = await client.get(receiverEmail);
-      res.locals.receiverExist = exist === "true";
+      const exist = (await client.get(receiverEmail)) === "true";
+      if ((errorIfExist && exist) || (!errorIfExist && !exist)) {
+        const err = new Error(`Receiver ${exist ? "" : "not "}subscribed`);
+        err.name = "400";
+        throw err;
+      }
+
       return next();
     } catch (e) {
-      const err = new Error('Specified receiver email')
-      err.name = '400';
-      return next(err)
+      return next(e);
     }
   };
 };
